@@ -51,7 +51,7 @@ $(document).ready(function(){
 		$.ajax({
 			type: "POST",
 			ContentType:"application/json",
-			headers: {"authToken": "87079245fced6252ff722440bca95403b451baea"},
+			headers: {"authToken": "xxxx"},
 			url: "https://api.github.com/repos/"+userName+"/"+repoName+"/issues",
 			dataType: "json",
 			data: newDefect,
