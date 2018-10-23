@@ -16,7 +16,7 @@ $(document).ready(function(){
 				
 			},
 			error: (error) => {
-				alert('Error loading data ' +error);
+				alert('Error fetching data');
 				$('.form-signin .btn-block').attr('disabled', false);
 			}
 		})
@@ -33,34 +33,28 @@ $(document).ready(function(){
 
 	//Create new defets
 	$('.raise-defect').on('submit', (e) => {
-		let userName = $.trim($('#inputUsername').val());
-		let repoName = $.trim($('#repo-name').val());
 		e.preventDefault();
+		let userName = $.trim($('#inputUsername').val());
+		let repoName = $.trim($('#repo-name').val());		
 		let newDefect = {
 		  "title": $.trim($('#title-name').val()),
-		  "body": $.trim($('#description-text').val()),
-		  "assignees": [
-		    userName
-		  ],
-		  "milestone": 1,
-		  "labels": [
-		    "bug"
-		  ]
+		  "body": $.trim($('#description-text').val())
 		}
 
 		$.ajax({
-			type: "POST",
-			ContentType:"application/json",
-			headers: {"authToken": "xxxx"},
 			url: "https://api.github.com/repos/"+userName+"/"+repoName+"/issues",
-			dataType: "json",
-			data: newDefect,
+			method: "POST",
+			beforeSend: function(xhr) {
+		      xhr.setRequestHeader("Authorization", "token " + $('#access-token').val());
+		    },
+		    data: JSON.stringify(newDefect),
 			success: (result) => {
-				console.log(result);
-				
+				$('#createIssueModal').modal('hide');
+				$('.form-signin').trigger('submit');
 			},
 			error: (error) => {
-				alert('Error loading data ' +error);
+				alert('Error posting data');
+				$('#createIssueModal').modal('hide');
 			}
 		})
 	});
