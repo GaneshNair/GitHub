@@ -24,9 +24,9 @@ $(document).ready(function(){
 
 	//Modal's
 	$('#createIssueModal').on('show.bs.modal', function (event) {
-	  var button = $(event.relatedTarget);
-	  var recipient = button.data('name');
-	  var modal = $(this)
+	  const button = $(event.relatedTarget);
+	  const recipient = button.data('name');
+	  const modal = $(this)
 	  modal.find('.modal-title').text('New defect for ' + recipient + ' repo');
 	  modal.find('#repo-name').val(recipient);
 	});
@@ -40,6 +40,7 @@ $(document).ready(function(){
 		  "title": $.trim($('#title-name').val()),
 		  "body": $.trim($('#description-text').val())
 		}
+		let issueURLGitHub = `https://www.github.com/${userName}/${repoName}/issues`;
 
 		$.ajax({
 			url: "https://api.github.com/repos/"+userName+"/"+repoName+"/issues",
@@ -51,6 +52,7 @@ $(document).ready(function(){
 			success: (result) => {
 				$('#createIssueModal').modal('hide');
 				$('.form-signin').trigger('submit');
+				setTimeout(()=>window.location.replace(issueURLGitHub), 2000); //Redirection after 2sec
 			},
 			error: (error) => {
 				alert('Error posting data');
